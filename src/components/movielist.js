@@ -11,8 +11,9 @@ function MovieList() {
 
     // Memoize the movies array
     const memoizedMovies = useMemo(() => {
-        return movies;
+      return Array.isArray(movies) ? movies : [];
     }, [movies]);
+  
 
     useEffect(() => {
         dispatch(fetchMovies());
