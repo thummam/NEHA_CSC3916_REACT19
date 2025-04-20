@@ -29,6 +29,27 @@ export function setMovie(movie) {
     }
 }
 
+export function submitReview(data) {
+    return dispatch => {
+        return fetch(`${process.env.REACT_APP_API_URL}/reviews`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify(data),
+            mode: 'cors'
+        }).then((response) => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response.json();
+        });
+    }
+}
+
+
 export function fetchMovie(movieId) {
     return dispatch => {
         return fetch(`${env.REACT_APP_API_URL}/movies/${movieId}?reviews=true`, {
@@ -45,7 +66,7 @@ export function fetchMovie(movieId) {
             }
             return response.json()
         }).then((res) => {
-            dispatch(movieFetched(res.data));
+            dispatch(movieFetched(res.movie));
         }).catch((e) => console.log(e));
     }
 }
@@ -66,7 +87,7 @@ export function fetchMovies() {
             }
             return response.json()
         }).then((res) => {
-            dispatch(moviesFetched(res.data));
+            dispatch(moviesFetched(res));
         }).catch((e) => console.log(e));
     }
 }
