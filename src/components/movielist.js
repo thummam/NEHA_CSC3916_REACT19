@@ -4,7 +4,7 @@ import { fetchMovies, setMovie, searchMovies } from "../actions/movieActions";
 import { Link } from 'react-router-dom';
 import { Image, Nav, Carousel } from 'react-bootstrap';
 import { BsStarFill } from 'react-icons/bs';
-import './MovieList.css'; // Create this file if not present
+
 
 function MovieList() {
   const dispatch = useDispatch();
