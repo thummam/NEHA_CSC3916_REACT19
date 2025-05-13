@@ -1,6 +1,8 @@
 import actionTypes from '../constants/actionTypes';
 //import runtimeEnv from '@mars/heroku-js-runtime-env'
 const env = process.env;
+import axios from 'axios';
+import { SEARCH_MOVIES_SUCCESS, SEARCH_MOVIES_FAIL } from '../constants/actionTypes';
 
 function moviesFetched(movies) {
     return {
@@ -28,6 +30,34 @@ export function setMovie(movie) {
         dispatch(movieSet(movie));
     }
 }
+
+export const searchMovies = (query) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const res = await axios.post(
+      'http://localhost:8080/movies/search',
+      { query },
+      {
+        headers: {
+          Authorization: token,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    dispatch({
+      type: SEARCH_MOVIES_SUCCESS,
+      payload: res.data.results,
+    });
+  } catch (error) {
+    dispatch({
+      type: SEARCH_MOVIES_FAIL,
+      payload: error.response?.data?.message || 'Search failed',
+    });
+  }
+};
+
 
 export function submitReview(data) {
     return dispatch => {
