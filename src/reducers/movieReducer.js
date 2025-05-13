@@ -5,6 +5,13 @@ let initialState = {
       selectedMovie: null
 }
 
+const initialState = {
+  movies: [],
+  searchResults: [],
+  error: null,
+};
+
+
 const movieReducer = (state = initialState, action) => {
       let updated = Object.assign({}, state);
 
@@ -19,6 +26,18 @@ const movieReducer = (state = initialState, action) => {
             case constants.FETCH_MOVIE:
                   updated['selectedMovie'] = action.selectedMovie;
                   return updated;
+            case 'SEARCH_MOVIES_SUCCESS':
+                    return {
+                      ...state,
+                      searchResults: action.payload,
+                      error: null,
+                    };
+                  case 'SEARCH_MOVIES_FAIL':
+                    return {
+                      ...state,
+                      searchResults: [],
+                      error: action.payload,
+                    };
             default:
                   return state;
       }
